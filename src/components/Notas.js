@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./notas.css";
 
 function Notas() {
     const [notas, setNotas] = useState([]);
@@ -6,7 +7,7 @@ function Notas() {
     const [estado, setEstado] = useState(false);
 
     useEffect(()=>{
-        console.log(estado);
+        //console.log(estado);
     },[estado])
 
     const agregarNota = () => {
@@ -34,15 +35,15 @@ function Notas() {
     }
     return (
         <>
-            <h1>Ingrese una nota</h1>
-            <input type="text" id="textoNota" onChange={(e) => setTexto(e.target.value)}></input>
-            <button onClick={() => agregarNota()}>ok</button>
+            <h1>Lista de Notas</h1>
+            <input type="text" placeholder="agregar nota" maxLength="40" id="textoNota" onChange={(e) => setTexto(e.target.value)}></input>
+            <button className="agregar" onClick={() => agregarNota()}>Agregar</button>
             {notas.map((item, indice) => (
-                <div key={indice} >
+                <div className="tareas" key={indice} >
                     <p className="detalleNota">{item.texto}</p>
                     <input type="checkbox" id="estadoNota" onChange={()=>(cambiarEstado(indice))}></input>
-                    <p>Estado: {item.estado ? "completo": "incompleto"}</p>
-                    <button className="btn-borrar" onClick={() => borrarNota(indice)}>borrar</button>
+                    <p className="estado">Estado: {item.estado ? "completo": "incompleto"}</p>
+                    <button className="borrar" onClick={() => borrarNota(indice)}>Borrar</button>
                 </div>
             ))}
         </>
