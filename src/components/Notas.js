@@ -31,6 +31,9 @@ function Notas() {
                 e.estado = !e.estado;
             }
         })
+        const nuevasNotas = [...notas];
+        nuevasNotas.splice(indice, 1);
+        setNotas(nuevasNotas);
         setEstado(!estado);
     }
     return (
