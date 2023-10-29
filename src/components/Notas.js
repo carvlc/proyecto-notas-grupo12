@@ -34,6 +34,7 @@ function Notas() {
         const nuevasNotas = [...notas];
         nuevasNotas.splice(indice, 1);
         setNotas(nuevasNotas);
+        console.log(notas)
         setEstado(!estado);
     }
     return (
@@ -44,7 +45,7 @@ function Notas() {
             {notas.map((item, indice) => (
                 <div className="tareas" key={indice} >
                     <p className="detalleNota">{item.texto}</p>
-                    <input type="checkbox" id="estadoNota" onChange={()=>(cambiarEstado(indice))}></input>
+                    <input type="checkbox" checked={false} id="estadoNota" onChange={()=>(cambiarEstado(indice))}></input>
                     <p className="estado">Estado: {item.estado ? "completo": "incompleto"}</p>
                     <button className="borrar" onClick={() => borrarNota(indice)}>Borrar</button>
                 </div>
