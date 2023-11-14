@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from "react";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Card from 'react-bootstrap/Card';
+
 import "./notas.css";
+import Nota from "./Nota";
 
 function Notas() {
     const [notas, setNotas] = useState([]);
     const [texto, setTexto] = useState('');
-    const [estado, setEstado] = useState(false);
+    const [titulo, setTitulo] = useState('');
+    const [isChange, setIsChange] = useState(false)
 
-    useEffect(()=>{
-        //console.log(estado);
-    },[estado])
+    useEffect(() => {
+        console.log(notas);
+        setTitulo('')
+        setTexto('')
+    }, [isChange])
 
     const agregarNota = () => {
         const objetoNota = {
+            titulo: titulo,
             texto: texto,
-            estado: false
+            estado: 'Inicial'
         }
         setNotas([...notas, objetoNota]);
-        textoNota.value = '';
+        setTitulo('')
+        setTexto('')
+
     }
 
     const borrarNota = (indice) => {
@@ -26,30 +37,101 @@ function Notas() {
     };
 
     const cambiarEstado = (indice) => {
-        notas.forEach((e, index)=>{
-            if(indice === index){
-                e.estado = !e.estado;
+        notas.forEach((e, index) => {
+            if (indice === index) {
+                if (e.estado === 'En proceso') {
+                    e.estado = 'Resuelto'
+                }
+                if (e.estado === "Inicial") {
+                    e.estado = 'En proceso';
+                }
             }
         })
-        const nuevasNotas = [...notas];
-        nuevasNotas.splice(indice, 1);
-        setNotas(nuevasNotas);
         console.log(notas)
-        setEstado(!estado);
+        setIsChange(!isChange)
+    }
+
+    const handleSubmit = e => {
+        e.target.reset();
     }
     return (
         <>
-            <h1>Lista de Notas</h1>
-            <input type="text" placeholder="agregar nota" maxLength="40" id="textoNota" onChange={(e) => setTexto(e.target.value)}></input>
-            <button className="agregar" onClick={() => agregarNota()}>Agregar</button>
-            {notas.map((item, indice) => (
-                <div className="tareas" key={indice} >
-                    <p className="detalleNota">{item.texto}</p>
-                    <input type="checkbox" checked={false} id="estadoNota" onChange={()=>(cambiarEstado(indice))}></input>
-                    <p className="estado">Estado: {item.estado ? "completo": "incompleto"}</p>
-                    <button className="borrar" onClick={() => borrarNota(indice)}>Borrar</button>
+            <div className="container">
+                <h1>Lista de Notas</h1>
+                <Form onSubmit={handleSubmit} >
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>Titulo</Form.Label>
+                        <Form.Control type="text" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label>Descripcion</Form.Label>
+                        <Form.Control type="text" value={texto} onChange={(e) => setTexto(e.target.value)} />
+                    </Form.Group>
+                    <Button variant="primary" onClick={() => agregarNota()}>
+                        Agregar
+                    </Button>
+                </Form>
+            </div>
+            <br></br>
+            <div className="grid">
+                <div className="notas-container">
+                    <h2>Inicio</h2>
+                    {notas.map((item, indice) => (
+
+                        item.estado === 'Inicial' ?
+                            <Nota
+                                key={indice}
+                                clave={indice}
+                                titulo={item.titulo}
+                                texto={item.texto}
+                                estado={item.estado}
+                                borrarNota={borrarNota}
+                                cambiarEstado={cambiarEstado}
+                            ></Nota>
+                            :
+                            <p key={indice}></p>
+
+                    ))}
                 </div>
-            ))}
+                <div className="notas-container">
+                    <h2>Tareas en Proceso</h2>
+                    {notas.map((item, indice) => (
+                        item.estado === 'En proceso' ?
+                            <Nota
+                                key={indice}
+                                clave={indice}
+                                titulo={item.titulo}
+                                texto={item.texto}
+                                estado={item.estado}
+                                borrarNota={borrarNota}
+                                cambiarEstado={cambiarEstado}
+                            ></Nota>
+                            :
+                            <p key={indice}></p>
+
+                    ))}
+                </div>
+                <div className="notas-container">
+                    <h2>Tareas Resueltas</h2>
+                    {notas.map((item, indice) => (
+
+                        item.estado === 'Resuelto' ?
+                            <Nota
+                                key={indice}
+                                clave={indice}
+                                titulo={item.titulo}
+                                texto={item.texto}
+                                estado={item.estado}
+                                borrarNota={borrarNota}
+                                cambiarEstado={cambiarEstado}
+                            ></Nota>
+                            :
+                            <p key={indice}></p>
+
+                    ))}
+                </div>
+            </div>
         </>
     )
 }
