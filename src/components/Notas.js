@@ -57,7 +57,7 @@ function Notas() {
     return (
         <>
             <div className="container">
-                <h1>Lista de Notas</h1>
+                <h1>Ingrese su Nota <i class="bi bi-pencil-fill"></i></h1>
                 <Form onSubmit={handleSubmit} >
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Titulo</Form.Label>
@@ -69,7 +69,7 @@ function Notas() {
                         <Form.Control type="text" value={texto} onChange={(e) => setTexto(e.target.value)} />
                     </Form.Group>
                     <Button variant="primary" onClick={() => agregarNota()}>
-                        Agregar
+                        Agregar <i class="bi bi-check-circle-fill"></i>
                     </Button>
                 </Form>
             </div>

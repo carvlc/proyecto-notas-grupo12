@@ -1,19 +1,24 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Badge from 'react-bootstrap/Badge';
+
 
 function Nota({clave, titulo, texto,estado, borrarNota,cambiarEstado}) {
   return (
-    <Card key={clave} border='info' style={{ width: '18rem' }}>
+    <Card key={clave} border='info' >
+      
       <Card.Body>
-        <Card.Title>{titulo}</Card.Title>
-        
+        <Card.Title><i class="bi bi-card-text"></i> {titulo} </Card.Title>
+       
         <Card.Text>{texto}</Card.Text>
-        <Card.Text>Estado: {estado}</Card.Text>
+        <Card.Text>Estado: <Badge pill bg="dark">{estado}</Badge> </Card.Text>
+        
 
         <hr/>
-        <Button variant="success" onClick={() => (cambiarEstado(clave))}>Cambiar Estado</Button>
+        <Button variant="danger" onClick={() => borrarNota(clave)}><i class="bi bi-trash-fill"></i></Button>
         <span> </span>
-        <Button variant="danger" onClick={() => borrarNota(clave)}>borrar</Button>
+        {estado !== 'Resuelto'?<Button variant="success" onClick={() => (cambiarEstado(clave))}>Cambiar Estado <i class="bi bi-arrow-90deg-right"></i></Button>:<></>}
+        
       </Card.Body>
     </Card>
   );
